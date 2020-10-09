@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AtencionClientesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Identificacion" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cola">
+          <Key>
+            <PropertyRef Name="IdCola" />
+          </Key>
+          <Property Name="IdCola" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTipoCola" Type="int" Nullable="false" />
+          <Property Name="IdCliente" Type="int" Nullable="false" />
+          <Property Name="HoraEntrada" Type="datetime" Nullable="false" />
+          <Property Name="FechaHoraAtencion" Type="datetime" Nullable="false" />
+          <Property Name="FechaHoraSalida" Type="datetime" Nullable="false" />
+          <Property Name="IdEstado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Estado">
+          <Key>
+            <PropertyRef Name="IdEstado" />
+          </Key>
+          <Property Name="IdEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoCola">
+          <Key>
+            <PropertyRef Name="IdTipoCola" />
+          </Key>
+          <Property Name="IdTipoCola" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Duracion" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Cola__IdCliente__2C3393D0">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Cola" Type="Self.Cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="Cola">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cola__IdEstado__2D27B809">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="1" />
+          <End Role="Cola" Type="Self.Cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Cola">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cola__IdTipoCola__2E1BDC42">
+          <End Role="TipoCola" Type="Self.TipoCola" Multiplicity="1" />
+          <End Role="Cola" Type="Self.Cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoCola">
+              <PropertyRef Name="IdTipoCola" />
+            </Principal>
+            <Dependent Role="Cola">
+              <PropertyRef Name="IdTipoCola" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ActualizarEstadosAtencion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FechaMomento" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="DeterminarColaMenorEspera" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="TipoCola" Type="int" Nullable="false" />
+                <Property Name="FechaHoraSalida" Type="datetime" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <EntityContainer Name="AtencionClientesModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cola" EntityType="Self.Cola" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estado" EntityType="Self.Estado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoCola" EntityType="Self.TipoCola" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Cola__IdCliente__2C3393D0" Association="Self.FK__Cola__IdCliente__2C3393D0">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Cola" EntitySet="Cola" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cola__IdEstado__2D27B809" Association="Self.FK__Cola__IdEstado__2D27B809">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="Cola" EntitySet="Cola" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cola__IdTipoCola__2E1BDC42" Association="Self.FK__Cola__IdTipoCola__2E1BDC42">
+            <End Role="TipoCola" EntitySet="TipoCola" />
+            <End Role="Cola" EntitySet="Cola" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AtencionClientesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="DeterminarColaMenorEspera_Result">
+          <Property Name="TipoCola" Type="Int32" Nullable="false" />
+          <Property Name="FechaHoraSalida" Type="DateTime" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Identificacion" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Colas" Relationship="Self.FK__Cola__IdCliente__2C3393D0" FromRole="Cliente" ToRole="Cola" />
+        </EntityType>
+        <EntityType Name="Cola">
+          <Key>
+            <PropertyRef Name="IdCola" />
+          </Key>
+          <Property Name="IdCola" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTipoCola" Type="Int32" Nullable="false" />
+          <Property Name="IdCliente" Type="Int32" Nullable="false" />
+          <Property Name="HoraEntrada" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaHoraAtencion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaHoraSalida" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Cola__IdCliente__2C3393D0" FromRole="Cola" ToRole="Cliente" />
+          <NavigationProperty Name="Estado" Relationship="Self.FK__Cola__IdEstado__2D27B809" FromRole="Cola" ToRole="Estado" />
+          <NavigationProperty Name="TipoCola" Relationship="Self.FK__Cola__IdTipoCola__2E1BDC42" FromRole="Cola" ToRole="TipoCola" />
+        </EntityType>
+        <EntityType Name="Estado">
+          <Key>
+            <PropertyRef Name="IdEstado" />
+          </Key>
+          <Property Name="IdEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Estado1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Colas" Relationship="Self.FK__Cola__IdEstado__2D27B809" FromRole="Estado" ToRole="Cola" />
+        </EntityType>
+        <EntityType Name="TipoCola">
+          <Key>
+            <PropertyRef Name="IdTipoCola" />
+          </Key>
+          <Property Name="IdTipoCola" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Duracion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Colas" Relationship="Self.FK__Cola__IdTipoCola__2E1BDC42" FromRole="TipoCola" ToRole="Cola" />
+        </EntityType>
+        <Association Name="FK__Cola__IdCliente__2C3393D0">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Cola" Type="Self.Cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="Cola">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cola__IdEstado__2D27B809">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="1" />
+          <End Role="Cola" Type="Self.Cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Cola">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cola__IdTipoCola__2E1BDC42">
+          <End Role="TipoCola" Type="Self.TipoCola" Multiplicity="1" />
+          <End Role="Cola" Type="Self.Cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoCola">
+              <PropertyRef Name="IdTipoCola" />
+            </Principal>
+            <Dependent Role="Cola">
+              <PropertyRef Name="IdTipoCola" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AtencionClientesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="Colas" EntityType="Self.Cola" />
+          <EntitySet Name="Estadoes" EntityType="Self.Estado" />
+          <EntitySet Name="TipoColas" EntityType="Self.TipoCola" />
+          <AssociationSet Name="FK__Cola__IdCliente__2C3393D0" Association="Self.FK__Cola__IdCliente__2C3393D0">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Cola" EntitySet="Colas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cola__IdEstado__2D27B809" Association="Self.FK__Cola__IdEstado__2D27B809">
+            <End Role="Estado" EntitySet="Estadoes" />
+            <End Role="Cola" EntitySet="Colas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cola__IdTipoCola__2E1BDC42" Association="Self.FK__Cola__IdTipoCola__2E1BDC42">
+            <End Role="TipoCola" EntitySet="TipoColas" />
+            <End Role="Cola" EntitySet="Colas" />
+          </AssociationSet>
+          <FunctionImport Name="DeterminarColaMenorEspera" IsComposable="true" ReturnType="Collection(AtencionClientesModel.DeterminarColaMenorEspera_Result)" />
+          <FunctionImport Name="ActualizarEstadosAtencion">
+            <Parameter Name="FechaMomento" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AtencionClientesModelStoreContainer" CdmEntityContainer="AtencionClientesEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="AtencionClientesModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Colas">
+            <EntityTypeMapping TypeName="AtencionClientesModel.Cola">
+              <MappingFragment StoreEntitySet="Cola">
+                <ScalarProperty Name="IdCola" ColumnName="IdCola" />
+                <ScalarProperty Name="IdTipoCola" ColumnName="IdTipoCola" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="HoraEntrada" ColumnName="HoraEntrada" />
+                <ScalarProperty Name="FechaHoraAtencion" ColumnName="FechaHoraAtencion" />
+                <ScalarProperty Name="FechaHoraSalida" ColumnName="FechaHoraSalida" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estadoes">
+            <EntityTypeMapping TypeName="AtencionClientesModel.Estado">
+              <MappingFragment StoreEntitySet="Estado">
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="Estado1" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoColas">
+            <EntityTypeMapping TypeName="AtencionClientesModel.TipoCola">
+              <MappingFragment StoreEntitySet="TipoCola">
+                <ScalarProperty Name="IdTipoCola" ColumnName="IdTipoCola" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionName="AtencionClientesModel.Store.DeterminarColaMenorEspera" FunctionImportName="DeterminarColaMenorEspera">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AtencionClientesModel.DeterminarColaMenorEspera_Result">
+                <ScalarProperty Name="TipoCola" ColumnName="TipoCola" />
+                <ScalarProperty Name="FechaHoraSalida" ColumnName="FechaHoraSalida" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ActualizarEstadosAtencion" FunctionName="AtencionClientesModel.Store.ActualizarEstadosAtencion" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
